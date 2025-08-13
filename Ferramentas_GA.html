@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Ferramentas Vetoriais</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url("https://blog.stoodi.com.br/wp-content/uploads/2020/02/goemetria-anal%C3%ADtica-1024x674.jpg"); /* Specify the image path */
+      background-size: cover; /* Ensures the image covers the entire background */
+      background-repeat: no-repeat; /* Prevents the image from repeating */
+      background-position: center center; /* Centers the image */
+      background-attachment: fixed; /* Keeps the image fixed when scrolling */
+    }
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 24px 12px 40px 12px;
+      background: #8caaaf;
+      box-shadow: 0 0 8px #ddd;
+      border-radius: 12px;
+    }
+    h1 {
+      font-size: 2.0em;
+      color: #1d0601;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    label {
+      font-size: 1em;
+      margin-bottom: 4px;
+      display: block;
+    }
+    select, input[type="number"] {
+      width: 100%;
+      font-size: 1.1em;
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    .input-group {
+      margin-bottom: 16px;
+    }
+    button {
+      width: 100%;
+      background: #0057b8;
+      color: #fff;
+      font-size: 1.1em;
+      padding: 13px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 6px #eee;
+    }
+    button:active {
+      background: #003c7a;
+    }
+    #resultado {
+      font-size: 1.08em;
+      background: #8caaaf;
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 14px;
+      text-align: center;
+      word-break: break-word;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px 2px 20px 2px;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      h1 {
+        font-size: 1.1em;
+      }
+      label, #resultado {
+        font-size: 1em;
+      }
+      button {
+        font-size: 1em;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><b><strong>Ferramentas Vetoriais</strong></b></h1>
+    <label for="opcao">Escolha uma operação:</label>
+    <select id="opcao">
+      <option value="1">Produto escalar</option>
+      <option value="2">Produto vetorial</option>
+      <option value="3">Módulo de vetor</option>
+      <option value="4">Projeção de v1 sobre v2</option>
+      <option value="5">Altura do paralelogramo formado por v1 e v2</option>
+      <option value="6">Equação do plano</option>
+      <option value="7">Distância de ponto ao plano</option>
+      <option value="8">Soma de vetores</option>
+      <option value="9">Subtração de vetores</option>
+      <option value="10">Distância de ponto à reta</option>
+    </select>
+
+    <form id="formulario">
+      <!-- Inputs dinâmicos aqui -->
+    </form>
+    <button onclick="calcular()">Calcular</button>
+    <div id="resultado"></div>
+  </div>
+<script>
+function prod_esc(v1, v2) {
+  return v1.reduce((acc, val, i) => acc + val * v2[i], 0);
+}
+function prod_vet(v1, v2) {
+  return [
+    v1[1]*v2[2] - v1[2]*v2[1],
+    -(v1[0]*v2[2] - v1[2]*v2[0]),
+    v1[0]*v2[1] - v1[1]*v2[0]
+  ];
+}
+function mod(v1) {
+  return Math.sqrt(v1.reduce((acc, val) => acc + val*val, 0));
+}
+function proj(v1, v2) {
+  let alpha = prod_esc(v1, v2) / (mod(v2) * mod(v2));
+  return v2.map(x => alpha * x);
+}
+function alt(v1, v2) {
+  let projecao = proj(v1, v2);
+  return v1.map((x, i) => x - projecao[i]);
+}
+function equacao_plano(v1, v2, p) {
+  let diretor = prod_vet(v1, v2);
+  let d = -(diretor[0]*p[0] + diretor[1]*p[1] + diretor[2]*p[2]);
+  return [...diretor, d];
+}
+function print_vet(v) {
+  return `[${v.map(x => x.toFixed(5)).join(', ')}]`;
+}
+function distancia_ponto_plano(p, n, d) {
+  let mod_val = n.reduce((acc, ni, i) => acc + ni * p[i], 0) + d;
+  let n1 = n.reduce((acc, ni) => acc + ni*ni, 0);
+  return Math.abs(mod_val) / Math.sqrt(n1);
+}
+function soma_vet(v1, v2) {
+  return v1.map((x, i) => x + v2[i]);
+}
+function sub_vet(v1, v2) {
+  return v1.map((x, i) => x - v2[i]);
+}
+function distancia_ponto_reta(P, Po, V) {
+  let vetor = sub_vet(P, Po);
+  let v1 = alt(vetor, V);
+  return [v1, mod(v1)];
+}
+function criarInputs(campos) {
+  let form = document.getElementById('formulario');
+  form.innerHTML = '';
+  campos.forEach(campo => {
+    let grupo = document.createElement('div');
+    grupo.className = 'input-group';
+    grupo.innerHTML = `<label>${campo.label}</label>`;
+    for(let i=0; i<campo.dim; i++) {
+      grupo.innerHTML += `<input type="number" inputmode="decimal" step="any" id="${campo.nome}${i}" placeholder="Coord. ${i+1}" required>`;
+    }
+    form.appendChild(grupo);
+  });
+  if(campos.some(c => c.nome === "n") && campos.some(c => c.nome === "p")) {
+    let grupo = document.createElement('div');
+    grupo.className = 'input-group';
+    grupo.innerHTML = `<label>Constante do plano (d):</label>
+    <input type="number" inputmode="decimal" step="any" id="d" required>`;
+    form.appendChild(grupo);
+  }
+}
+function getVetor(nome, dim=3) {
+  let v = [];
+  for(let i=0; i<dim; i++) {
+    v.push(parseFloat(document.getElementById(nome+i).value));
+  }
+  return v;
+}
+document.getElementById('opcao').addEventListener('change', function() {
+  const val = this.value;
+  let campos = [];
+  if(val=="1"||val=="2"||val=="4"||val=="5"||val=="8"||val=="9")
+    campos=[{nome:"v1", label:"Vetor v1:", dim:3},{nome:"v2", label:"Vetor v2:", dim:3}];
+  else if(val=="3")
+    campos=[{nome:"v1", label:"Vetor:", dim:3}];
+  else if(val=="6")
+    campos=[{nome:"v1", label:"Vetor v1:", dim:3},{nome:"v2", label:"Vetor v2:", dim:3},{nome:"p", label:"Ponto do plano:", dim:3}];
+  else if(val=="7")
+    campos=[{nome:"p", label:"Ponto:", dim:3},{nome:"n", label:"Normal do plano:", dim:3}];
+  else if(val=="10")
+    campos=[{nome:"P", label:"Ponto P:", dim:3},{nome:"Po", label:"Ponto Po (origem da reta):", dim:3},{nome:"V", label:"Vetor diretor da reta:", dim:3}];
+  criarInputs(campos);
+});
+document.getElementById('opcao').dispatchEvent(new Event('change'));
+function calcular() {
+  const val = document.getElementById('opcao').value;
+  let res = '';
+  try {
+    if(val=="1") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      res = "Produto escalar: " + prod_esc(v1,v2).toFixed(5);
+    }
+    else if(val=="2") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      res = "Produto vetorial: " + print_vet(prod_vet(v1,v2));
+    }
+    else if(val=="3") {
+      let v1=getVetor('v1');
+      res = "Módulo do vetor: " + mod(v1).toFixed(5);
+    }
+    else if(val=="4") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      res = "Projeção de v1 sobre v2: " + print_vet(proj(v1,v2));
+    }
+    else if(val=="5") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      let altura = alt(v1, v2);
+      res = "Altura do paralelogramo: " + print_vet(altura) + " com módulo: " + mod(altura).toFixed(5);
+    }
+    else if(val=="6") {
+      let v1=getVetor('v1'), v2=getVetor('v2'), p=getVetor('p');
+      let eq = equacao_plano(v1,v2,p);
+      res = `Equação do plano: ${eq[0].toFixed(5)}*X + ${eq[1].toFixed(5)}*Y + ${eq[2].toFixed(5)}*Z + ${eq[3].toFixed(5)} = 0`;
+    }
+    else if(val=="7") {
+      let p=getVetor('p'), n=getVetor('n');
+      let d=parseFloat(document.getElementById('d').value);
+      res = "Distância do ponto ao plano: " + distancia_ponto_plano(p,n,d).toFixed(5);
+    }
+    else if(val=="8") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      res = "Soma dos vetores: " + print_vet(soma_vet(v1,v2));
+    }
+    else if(val=="9") {
+      let v1=getVetor('v1'), v2=getVetor('v2');
+      res = "Subtração dos vetores: " + print_vet(sub_vet(v1,v2));
+    }
+    else if(val=="10") {
+      let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V');
+      let [resultado, distancia] = distancia_ponto_reta(P,Po,V);
+      res = "Vetor distância: " + print_vet(resultado) + " | Módulo: " + distancia.toFixed(5);
+    }
+  } catch(e) {
+    res = "Preencha todos os campos corretamente!";
+  }
+  document.getElementById('resultado').textContent = res;
+}
+</script>
+</body>
+</html>
