@@ -14,12 +14,13 @@ O objetivo principal deste projeto é facilitar o trabalho com documentos HTML, 
 - **Facilidade para adicionar estilos e scripts**
 - **Organização modular do código**
 
-## Como usar
+## Como usar  [acesse aqui](Use o app web: https://franciscoclaudio.github.io/html/Ferramentas_GA.html)
 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/franciscoclaudio/html.git
    ```
+   
 2. Instale as dependências, se houver.
 3. Execute o programa conforme instruções no arquivo principal (`main`, `index`, etc).
 
