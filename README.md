@@ -14,7 +14,9 @@ O objetivo principal deste projeto é facilitar o trabalho com documentos HTML, 
 - **Facilidade para adicionar estilos e scripts**
 - **Organização modular do código**
 
-## Como usar  [acesse aqui](Use o app web: https://franciscoclaudio.github.io/html/Ferramentas_GA.html)
+## Como usar Use o app web: [acesse aqui]( https://franciscoclaudio.github.io/html/Ferramentas_GA.html)
+
+## Instruções para a reprodução:
 
 1. Clone o repositório:
    ```bash
