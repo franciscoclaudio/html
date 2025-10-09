@@ -26,13 +26,13 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-attachment: fixed;
-      color: #f0f0f0; /* Texto do body fora do container */
+      color: #f0f0f0; 
     }
     .container {
       max-width: 500px;
       margin: 40px auto; 
       padding: 30px 20px;
-      background: rgba(140, 170, 175, 0.95); /* Levemente transparente */
+      background: rgba(140, 170, 175, 0.95);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       border-radius: 12px;
     }
@@ -50,7 +50,8 @@
       color: #1d0601;
       font-weight: 600;
     }
-    select, input[type="number"] {
+    select, .input-d input, .input-group input[type="number"]:not(.coord) { 
+        /* Inputs que não são de coordenada de vetor/ponto */
       width: 100%;
       font-size: 1.1em;
       padding: 10px;
@@ -64,9 +65,27 @@
         border-color: #0057b8;
         outline: none;
     }
+    
+    /* === Estilo para a nova entrada horizontal === */
+    .coord-group {
+        display: flex;
+        gap: 8px; /* Espaço entre as coordenadas */
+    }
+    .coord-group input.coord {
+        flex-grow: 1; /* Faz as caixas de texto dividirem o espaço */
+        font-size: 1.1em;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid #777;
+        border-radius: 6px;
+        box-sizing: border-box;
+        text-align: center;
+    }
     .input-group {
       margin-bottom: 16px;
     }
+    /* =========================================== */
+    
     button {
       width: 100%;
       background: #0057b8;
@@ -119,7 +138,6 @@
         padding: 12px;
       }
     }
-
   </style>
 </head>
 <body>
@@ -140,7 +158,7 @@
     </select>
 
     <form id="formulario">
-      </form>
+    </form>
     <button onclick="calcular()">Calcular</button>
     <div id="resultado"></div>
   </div>
@@ -176,7 +194,6 @@ function equacao_plano(v1, v2, p) {
   return [...diretor, d];
 }
 function print_vet(v) {
-  // Retorna com o símbolo de vetor (seta para a direita)
   return `\u{2192}[${v.map(x => x.toFixed(5)).join(', ')}]`;
 }
 function distancia_ponto_plano(p, n, d) {
@@ -199,31 +216,41 @@ function distancia_ponto_reta(P, Po, V) {
     throw new Error("O vetor diretor da reta não pode ser o vetor nulo.");
   }
   let vetor = sub_vet(P, Po); // P - Po
-  // O vetor 'v1' é o vetor ortogonal (altura) entre P e a reta, cuja magnitude é a distância
-  let v1 = prod_vet(vetor, V); 
-  return  mod(v1)/mod(V);
+  // Distância é dada por |(P - Po) x V| / |V|
+  let vetor_prod = prod_vet(vetor, V); 
+  return mod(vetor_prod) / mod_V;
 }
 function criarInputs(campos) {
   let form = document.getElementById('formulario');
   form.innerHTML = '';
+  
   campos.forEach(campo => {
     let grupo = document.createElement('div');
     grupo.className = 'input-group';
-    grupo.innerHTML = `<label for="${campo.nome}0">${campo.label}</label>`;
+    grupo.innerHTML = `<label>${campo.label}</label>`;
+    
+    // Novo container para as coordenadas
+    let coordGroup = document.createElement('div');
+    coordGroup.className = 'coord-group';
+    
     for(let i=0; i<campo.dim; i++) {
-      // Adicionado title para acessibilidade
-      grupo.innerHTML += `<input type="number" inputmode="decimal" step="any" id="${campo.nome}${i}" placeholder="Coord. ${i+1}" title="Coordenada ${i+1} de ${campo.label.replace(':','')}" required>`;
+      let placeholderText = (i === 0) ? 'X' : (i === 1) ? 'Y' : 'Z';
+      coordGroup.innerHTML += `<input type="number" inputmode="decimal" step="any" class="coord" id="${campo.nome}${i}" placeholder="${placeholderText}" title="Coordenada ${placeholderText} de ${campo.label.replace(':','')}" required>`;
     }
+    
+    grupo.appendChild(coordGroup);
     form.appendChild(grupo);
   });
+  
   if(campos.some(c => c.nome === "n") && campos.some(c => c.nome === "p")) {
     let grupo = document.createElement('div');
-    grupo.className = 'input-group';
+    grupo.className = 'input-group input-d';
     grupo.innerHTML = `<label for="d">Constante do plano (d):</label>
     <input type="number" inputmode="decimal" step="any" id="d" placeholder="Valor de D na equação Ax+By+Cz+D=0" required>`;
     form.appendChild(grupo);
   }
 }
+// Não precisa mudar getVetor, pois ele ainda usa os IDs nome0, nome1, nome2
 function getVetor(nome, dim=3) {
   let v = [];
   for(let i=0; i<dim; i++) {
@@ -299,7 +326,6 @@ function calcular() {
       res = "Distância do ponto à reta: " + distancia.toFixed(5);
     }
   } catch(e) {
-    // Captura erros de parsing ou de divisão por zero.
     res = "Erro: " + (e.message || "Preencha todos os campos corretamente!");
   }
   document.getElementById('resultado').textContent = res;
