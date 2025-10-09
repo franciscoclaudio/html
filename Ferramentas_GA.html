@@ -5,21 +5,8 @@
   <title>Ferramentas Vetoriais</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Overlay para melhorar a legibilidade sobre a imagem */
-    body::before { 
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4); 
-        z-index: -1; 
-    }
-
-    /* Aplica box-sizing para evitar que padding cause overflow */
     *, *::before, *::after {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
 
     body {
@@ -31,146 +18,220 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-attachment: fixed;
-      color: #f0f0f0; 
+      min-height: 100vh;
+      position: relative;
     }
+
+    body::before { 
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.45); 
+      z-index: -1; 
+    }
+
     .container {
-      max-width: 500px;
-      margin: 40px auto; 
-      padding: 30px 20px;
-      background: rgba(140, 170, 175, 0.95);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      border-radius: 12px;
+      max-width: 420px;
+      margin: 25px auto;
+      padding: 22px 16px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      border-radius: 14px;
     }
+
     h1 {
-      font-size: 2.2em;
-      color: #1d0601;
+      font-size: 1.65em;
+      color: #1a202c;
       text-align: center;
-      margin-bottom: 25px;
-      font-weight: bold;
+      margin: 0 0 18px 0;
+      font-weight: 700;
+      letter-spacing: -0.5px;
     }
+
     label {
-      font-size: 1.05em;
-      margin-bottom: 6px;
+      font-size: 0.88em;
+      margin-bottom: 5px;
       display: block;
-      color: #1d0601;
+      color: #2d3748;
       font-weight: 600;
     }
-    select, .input-d input, .input-group input[type="number"]:not(.coord) { 
+
+    select {
       width: 100%;
-      font-size: 1.1em;
-      padding: 10px;
-      margin-bottom: 12px;
-      border: 1px solid #777;
-      border-radius: 6px;
-      transition: border-color 0.3s;
-    }
-    select:focus, input[type="number"]:focus {
-        border-color: #0057b8;
-        outline: none;
-    }
-    
-    /* === Estilo para a entrada horizontal (Coordenadas) === */
-    .coord-group {
-        display: flex;
-        gap: 8px; /* Espaço entre as coordenadas (mantido) */
-    }
-    .coord-group input.coord {
-        /*
-         * CÁLCULO DE LARGURA CORRIGIDO:
-         * Garante que 3 inputs + 2 gaps (16px) ocupem exatamente 100%.
-         * (100% - 16px) / 3 = 33.33% - 5.33px.
-         */
-        width: calc((100% - 16px) / 3);
-        flex-grow: 0; /* Desabilita o flex-grow para usar a largura calculada */
-        font-size: 1.1em;
-        padding: 10px;
-        margin-bottom: 12px;
-        border: 1px solid #777;
-        border-radius: 6px;
-        text-align: center;
-    }
-    .input-group {
+      font-size: 0.9em;
+      padding: 9px 11px;
       margin-bottom: 16px;
+      border: 2px solid #cbd5e0;
+      border-radius: 7px;
+      background-color: white;
+      transition: all 0.25s;
+      cursor: pointer;
+      color: #2d3748;
     }
-    /* =========================================== */
-    
+
+    select:focus {
+      border-color: #3182ce;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
+    .input-group {
+      margin-bottom: 13px;
+    }
+
+    .coord-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    .coord-group input {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.82em;
+      padding: 7px 3px;
+      border: 2px solid #cbd5e0;
+      border-radius: 6px;
+      text-align: center;
+      transition: all 0.25s;
+      background-color: white;
+      color: #2d3748;
+      font-weight: 500;
+    }
+
+    .coord-group input:focus {
+      border-color: #3182ce;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
+    .coord-group input::placeholder {
+      color: #a0aec0;
+      font-weight: 600;
+    }
+
+    .input-d input {
+      width: 100%;
+      font-size: 0.82em;
+      padding: 7px 10px;
+      border: 2px solid #cbd5e0;
+      border-radius: 6px;
+      transition: all 0.25s;
+      background-color: white;
+      color: #2d3748;
+    }
+
+    .input-d input:focus {
+      border-color: #3182ce;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    }
+
     button {
       width: 100%;
-      background: #0057b8;
+      background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%);
       color: #fff;
-      font-size: 1.1em;
-      padding: 14px;
+      font-size: 0.95em;
+      font-weight: 700;
+      padding: 11px;
       border: none;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
-      margin-top: 15px;
-      margin-bottom: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      transition: background 0.3s, transform 0.1s;
+      margin-top: 8px;
+      margin-bottom: 6px;
+      box-shadow: 0 4px 14px rgba(49, 130, 206, 0.35);
+      transition: all 0.25s;
+      letter-spacing: 0.3px;
     }
+
     button:hover {
-        background: #00428d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(49, 130, 206, 0.45);
+      background: linear-gradient(135deg, #2c5aa0 0%, #2a4d8f 100%);
     }
+
     button:active {
-      background: #003c7a;
-      transform: translateY(1px);
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3);
     }
+
     #resultado {
-      font-size: 1.1em;
-      background: #f0f0f0;
-      color: #1d0601;
-      padding: 18px;
+      font-size: 0.9em;
+      background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+      color: #1a202c;
+      padding: 13px;
       border-radius: 8px;
-      margin-top: 20px;
-      font-weight: bold;
+      margin-top: 12px;
+      font-weight: 600;
       text-align: center;
-      word-wrap: break-word; 
+      word-wrap: break-word;
       word-break: break-word;
-      border: 2px solid #0057b8;
+      border: 2px solid #3182ce;
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
     }
-    
-    /* === AJUSTES DE VISUALIZAÇÃO PARA CELULAR (Mobile) === */
+
+    #resultado:empty {
+      display: none;
+    }
+
     @media (max-width: 600px) {
       .container {
-        max-width: 95%; 
-        margin: 15px auto;
-        padding: 15px 10px 30px 10px;
-        box-shadow: none;
-        border-radius: 0;
-        background: rgba(140, 170, 175, 0.98); 
+        max-width: calc(100% - 16px);
+        margin: 12px 8px;
+        padding: 18px 13px;
       }
+
       h1 {
-        font-size: 1.6em;
+        font-size: 1.4em;
+        margin-bottom: 14px;
       }
-      label, #resultado {
-        font-size: 1em;
+
+      label {
+        font-size: 0.83em;
       }
-      button {
-        font-size: 1em;
-        padding: 12px;
+
+      select, button {
+        font-size: 0.87em;
       }
-      /* Aplica ajustes de padding e font-size para que caiba melhor no mobile */
-      .coord-group input.coord {
-        font-size: 0.95em; 
-        padding: 8px 4px;
+
+      .coord-group {
+        gap: 4px;
       }
-      select, .input-d input, .input-group input[type="number"]:not(.coord) {
-        font-size: 0.95em;
-        padding: 8px;
+
+      .coord-group input {
+        font-size: 0.78em;
+        padding: 6px 2px;
+      }
+
+      .input-d input {
+        font-size: 0.78em;
+        padding: 6px 8px;
+      }
+
+      #resultado {
+        font-size: 0.85em;
+        padding: 11px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Ferramentas Vetoriais</h1> 
+    <h1>🧮 Ferramentas Vetoriais</h1>
+    
     <label for="opcao">Escolha uma operação:</label>
     <select id="opcao">
       <option value="1">Produto escalar</option>
       <option value="2">Produto vetorial</option>
       <option value="3">Módulo de vetor</option>
       <option value="4">Projeção de v1 sobre v2</option>
-      <option value="5">Vetor Altura do paralelogramo (v1 - proj_v2(v1))</option>
+      <option value="5">Vetor Altura do paralelogramo</option>
       <option value="6">Equação do plano</option>
       <option value="7">Distância de ponto ao plano</option>
       <option value="8">Soma de vetores</option>
@@ -178,15 +239,18 @@
       <option value="10">Distância de ponto à reta</option>
     </select>
 
-    <form id="formulario">
-    </form>
+    <form id="formulario"></form>
+    
     <button onclick="calcular()">Calcular</button>
+    
     <div id="resultado"></div>
   </div>
+
 <script>
 function prod_esc(v1, v2) {
   return v1.reduce((acc, val, i) => acc + val * v2[i], 0);
 }
+
 function prod_vet(v1, v2) {
   return [
     v1[1]*v2[2] - v1[2]*v2[1],
@@ -194,9 +258,11 @@ function prod_vet(v1, v2) {
     v1[0]*v2[1] - v1[1]*v2[0]
   ];
 }
+
 function mod(v1) {
   return Math.sqrt(v1.reduce((acc, val) => acc + val*val, 0));
 }
+
 function proj(v1, v2) {
   let mod_v2_sq = mod(v2) * mod(v2);
   if (mod_v2_sq === 0) {
@@ -205,18 +271,22 @@ function proj(v1, v2) {
   let alpha = prod_esc(v1, v2) / mod_v2_sq;
   return v2.map(x => alpha * x);
 }
+
 function alt(v1, v2) {
   let projecao = proj(v1, v2);
   return v1.map((x, i) => x - projecao[i]);
 }
+
 function equacao_plano(v1, v2, p) {
   let diretor = prod_vet(v1, v2);
   let d = -(diretor[0]*p[0] + diretor[1]*p[1] + diretor[2]*p[2]);
   return [...diretor, d];
 }
+
 function print_vet(v) {
-  return `\u{2192}[${v.map(x => x.toFixed(5)).join(', ')}]`;
+  return `[${v.map(x => x.toFixed(4)).join(', ')}]`;
 }
+
 function distancia_ponto_plano(p, n, d) {
   let mod_val = n.reduce((acc, ni, i) => acc + ni * p[i], 0) + d;
   let n1 = n.reduce((acc, ni) => acc + ni*ni, 0);
@@ -225,21 +295,25 @@ function distancia_ponto_plano(p, n, d) {
   }
   return Math.abs(mod_val) / Math.sqrt(n1);
 }
+
 function soma_vet(v1, v2) {
   return v1.map((x, i) => x + v2[i]);
 }
+
 function sub_vet(v1, v2) {
   return v1.map((x, i) => x - v2[i]);
 }
+
 function distancia_ponto_reta(P, Po, V) {
   let mod_V = mod(V);
   if (mod_V === 0) {
     throw new Error("O vetor diretor da reta não pode ser o vetor nulo.");
   }
-  let vetor = sub_vet(P, Po); // P - Po
-  let vetor_prod = prod_vet(vetor, V); 
+  let vetor = sub_vet(P, Po);
+  let vetor_prod = prod_vet(vetor, V);
   return mod(vetor_prod) / mod_V;
 }
+
 function criarInputs(campos) {
   let form = document.getElementById('formulario');
   form.innerHTML = '';
@@ -253,8 +327,14 @@ function criarInputs(campos) {
     coordGroup.className = 'coord-group';
     
     for(let i=0; i<campo.dim; i++) {
-      let placeholderText = (i === 0) ? 'X' : (i === 1) ? 'Y' : 'Z';
-      coordGroup.innerHTML += `<input type="number" inputmode="decimal" step="any" class="coord" id="${campo.nome}${i}" placeholder="${placeholderText}" title="Coordenada ${placeholderText} de ${campo.label.replace(':','')}" required>`;
+      let placeholderText = (i === 0) ? 'i' : (i === 1) ? 'j' : 'k';
+      let input = document.createElement('input');
+      input.type = 'number';
+      input.step = 'any';
+      input.id = campo.nome + i;
+      input.placeholder = placeholderText;
+      input.required = true;
+      coordGroup.appendChild(input);
     }
     
     grupo.appendChild(coordGroup);
@@ -265,10 +345,11 @@ function criarInputs(campos) {
     let grupo = document.createElement('div');
     grupo.className = 'input-group input-d';
     grupo.innerHTML = `<label for="d">Constante do plano (d):</label>
-    <input type="number" inputmode="decimal" step="any" id="d" placeholder="Valor de D na equação Ax+By+Cz+D=0" required>`;
+    <input type="number" step="any" id="d" placeholder="Valor de d" required>`;
     form.appendChild(grupo);
   }
 }
+
 function getVetor(nome, dim=3) {
   let v = [];
   for(let i=0; i<dim; i++) {
@@ -276,9 +357,11 @@ function getVetor(nome, dim=3) {
   }
   return v;
 }
+
 document.getElementById('opcao').addEventListener('change', function() {
   const val = this.value;
   let campos = [];
+  
   if(val=="1"||val=="2"||val=="4"||val=="5"||val=="8"||val=="9")
     campos=[{nome:"v1", label:"Vetor v1:", dim:3},{nome:"v2", label:"Vetor v2:", dim:3}];
   else if(val=="3")
@@ -288,17 +371,22 @@ document.getElementById('opcao').addEventListener('change', function() {
   else if(val=="7")
     campos=[{nome:"p", label:"Ponto P:", dim:3},{nome:"n", label:"Normal do plano (n):", dim:3}];
   else if(val=="10")
-    campos=[{nome:"P", label:"Ponto P:", dim:3},{nome:"Po", label:"Ponto Po (origem da reta):", dim:3},{nome:"V", label:"Vetor diretor da reta (V):", dim:3}];
+    campos=[{nome:"P", label:"Ponto P:", dim:3},{nome:"Po", label:"Ponto Po (origem):", dim:3},{nome:"V", label:"Vetor diretor (V):", dim:3}];
+  
   criarInputs(campos);
+  document.getElementById('resultado').textContent = '';
 });
+
 document.getElementById('opcao').dispatchEvent(new Event('change'));
+
 function calcular() {
   const val = document.getElementById('opcao').value;
   let res = '';
+  
   try {
     if(val=="1") {
       let v1=getVetor('v1'), v2=getVetor('v2');
-      res = "Produto escalar: " + prod_esc(v1,v2).toFixed(5);
+      res = "Produto escalar: " + prod_esc(v1,v2).toFixed(4);
     }
     else if(val=="2") {
       let v1=getVetor('v1'), v2=getVetor('v2');
@@ -306,7 +394,7 @@ function calcular() {
     }
     else if(val=="3") {
       let v1=getVetor('v1');
-      res = "Módulo do vetor: " + mod(v1).toFixed(5);
+      res = "Módulo do vetor: " + mod(v1).toFixed(4);
     }
     else if(val=="4") {
       let v1=getVetor('v1'), v2=getVetor('v2');
@@ -315,7 +403,7 @@ function calcular() {
     else if(val=="5") {
       let v1=getVetor('v1'), v2=getVetor('v2');
       let altura = alt(v1, v2);
-      res = "Vetor Altura ($\mathbf{v_h}$): " + print_vet(altura) + " | Módulo: " + mod(altura).toFixed(5);
+      res = "Vetor Altura: " + print_vet(altura) + " | Módulo: " + mod(altura).toFixed(4);
     }
     else if(val=="6") {
       let v1=getVetor('v1'), v2=getVetor('v2'), p=getVetor('p');
@@ -323,12 +411,12 @@ function calcular() {
       if (mod([eq[0], eq[1], eq[2]]) === 0) {
         throw new Error("Vetores de direção paralelos. O plano não pode ser determinado.");
       }
-      res = `Equação do plano: ${eq[0].toFixed(5)}*X + ${eq[1].toFixed(5)}*Y + ${eq[2].toFixed(5)}*Z + ${eq[3].toFixed(5)} = 0`;
+      res = `Equação: ${eq[0].toFixed(4)}X + ${eq[1].toFixed(4)}Y + ${eq[2].toFixed(4)}Z + ${eq[3].toFixed(4)} = 0`;
     }
     else if(val=="7") {
       let p=getVetor('p'), n=getVetor('n');
       let d=parseFloat(document.getElementById('d').value);
-      res = "Distância do ponto ao plano: " + distancia_ponto_plano(p,n,d).toFixed(5);
+      res = "Distância do ponto ao plano: " + distancia_ponto_plano(p,n,d).toFixed(4);
     }
     else if(val=="8") {
       let v1=getVetor('v1'), v2=getVetor('v2');
@@ -339,13 +427,14 @@ function calcular() {
       res = "Subtração dos vetores: " + print_vet(sub_vet(v1,v2));
     }
     else if(val=="10") {
-      let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V')
+      let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V');
       let distancia = distancia_ponto_reta(P,Po,V);
-      res = "Distância do ponto à reta: " + distancia.toFixed(5);
+      res = "Distância do ponto à reta: " + distancia.toFixed(4);
     }
   } catch(e) {
-    res = "Erro: " + (e.message || "Preencha todos os campos corretamente!");
+    res = "⚠️ Erro: " + (e.message || "Preencha todos os campos corretamente!");
   }
+  
   document.getElementById('resultado').textContent = res;
 }
 </script>
