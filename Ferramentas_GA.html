@@ -200,8 +200,8 @@ function distancia_ponto_reta(P, Po, V) {
   }
   let vetor = sub_vet(P, Po); // P - Po
   // O vetor 'v1' é o vetor ortogonal (altura) entre P e a reta, cuja magnitude é a distância
-  let v1 = alt(vetor, V); 
-  return [v1, mod(v1)];
+  let v1 = prod_vet(vetor, V); 
+  return  mod(v1)/mod(V);
 }
 function criarInputs(campos) {
   let form = document.getElementById('formulario');
@@ -296,7 +296,7 @@ function calcular() {
     else if(val=="10") {
       let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V');
       let [resultado, distancia] = distancia_ponto_reta(P,Po,V);
-      res = "Vetor Distância ($\mathbf{v_d}$): " + print_vet(resultado) + " | Distância: " + distancia.toFixed(5);
+      print_vet(resultado) + " | Distância: " + distancia.toFixed(5);
     }
   } catch(e) {
     // Captura erros de parsing ou de divisão por zero.
