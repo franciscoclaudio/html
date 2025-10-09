@@ -294,9 +294,9 @@ function calcular() {
       res = "Subtração dos vetores: " + print_vet(sub_vet(v1,v2));
     }
     else if(val=="10") {
-      let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V');
-      let [resultado, distancia] = distancia_ponto_reta(P,Po,V);
-      print_vet(resultado) + " | Distância: " + distancia.toFixed(5);
+      let P=getVetor('P'), Po=getVetor('Po'), V=getVetor('V')
+      let distancia = distancia_ponto_reta(P,Po,V);
+      res = "Distância do ponto à reta: " + distancia.toFixed(5);
     }
   } catch(e) {
     // Captura erros de parsing ou de divisão por zero.
