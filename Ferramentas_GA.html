@@ -66,13 +66,13 @@
         outline: none;
     }
     
-    /* === Estilo para a nova entrada horizontal === */
+    /* === Estilo para a entrada horizontal === */
     .coord-group {
         display: flex;
         gap: 8px; /* Espaço entre as coordenadas */
     }
     .coord-group input.coord {
-        flex-grow: 1; /* Faz as caixas de texto dividirem o espaço */
+        flex-grow: 1; 
         font-size: 1.1em;
         padding: 10px;
         margin-bottom: 12px;
@@ -119,6 +119,8 @@
       word-break: break-word;
       border: 2px solid #0057b8;
     }
+    
+    /* === AJUSTES DE VISUALIZAÇÃO PARA CELULAR (Mobile) === */
     @media (max-width: 600px) {
       .container {
         margin: 0;
@@ -136,6 +138,15 @@
       button {
         font-size: 1em;
         padding: 12px;
+      }
+      /* Ajuste principal: Inputs de coordenada menores no mobile */
+      .coord-group input.coord {
+        font-size: 1em; /* Fonte um pouco menor */
+        padding: 8px 5px; /* Padding interno menor */
+      }
+      select, .input-d input, .input-group input[type="number"]:not(.coord) {
+        font-size: 1em;
+        padding: 8px;
       }
     }
   </style>
@@ -229,7 +240,6 @@ function criarInputs(campos) {
     grupo.className = 'input-group';
     grupo.innerHTML = `<label>${campo.label}</label>`;
     
-    // Novo container para as coordenadas
     let coordGroup = document.createElement('div');
     coordGroup.className = 'coord-group';
     
@@ -250,7 +260,6 @@ function criarInputs(campos) {
     form.appendChild(grupo);
   }
 }
-// Não precisa mudar getVetor, pois ele ainda usa os IDs nome0, nome1, nome2
 function getVetor(nome, dim=3) {
   let v = [];
   for(let i=0; i<dim; i++) {
