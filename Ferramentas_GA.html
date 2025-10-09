@@ -17,6 +17,11 @@
         z-index: -1; 
     }
 
+    /* Aplica box-sizing para evitar que padding cause overflow */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
@@ -51,14 +56,12 @@
       font-weight: 600;
     }
     select, .input-d input, .input-group input[type="number"]:not(.coord) { 
-        /* Inputs que não são de coordenada de vetor/ponto */
       width: 100%;
       font-size: 1.1em;
       padding: 10px;
       margin-bottom: 12px;
       border: 1px solid #777;
       border-radius: 6px;
-      box-sizing: border-box;
       transition: border-color 0.3s;
     }
     select:focus, input[type="number"]:focus {
@@ -66,7 +69,7 @@
         outline: none;
     }
     
-    /* === Estilo para a entrada horizontal === */
+    /* === Estilo para a entrada horizontal (Coordenadas) === */
     .coord-group {
         display: flex;
         gap: 8px; /* Espaço entre as coordenadas */
@@ -78,7 +81,6 @@
         margin-bottom: 12px;
         border: 1px solid #777;
         border-radius: 6px;
-        box-sizing: border-box;
         text-align: center;
     }
     .input-group {
@@ -116,6 +118,8 @@
       margin-top: 20px;
       font-weight: bold;
       text-align: center;
+      /* Correção principal: Força quebra de linha em longas strings sem espaço */
+      word-wrap: break-word; 
       word-break: break-word;
       border: 2px solid #0057b8;
     }
@@ -123,14 +127,16 @@
     /* === AJUSTES DE VISUALIZAÇÃO PARA CELULAR (Mobile) === */
     @media (max-width: 600px) {
       .container {
-        margin: 0;
+        /* Aumenta a largura para 95% da viewport, garantindo espaço nas bordas */
+        max-width: 95%; 
+        margin: 15px auto; /* Margin menor em cima/baixo */
         padding: 15px 10px 30px 10px;
         box-shadow: none;
         border-radius: 0;
         background: rgba(140, 170, 175, 0.98); 
       }
       h1 {
-        font-size: 1.8em;
+        font-size: 1.6em; /* Título um pouco menor */
       }
       label, #resultado {
         font-size: 1em;
@@ -139,13 +145,14 @@
         font-size: 1em;
         padding: 12px;
       }
-      /* Ajuste principal: Inputs de coordenada menores no mobile */
+      /* Inputs de coordenada: Fonte e padding menores para mais espaço */
       .coord-group input.coord {
-        font-size: 1em; /* Fonte um pouco menor */
-        padding: 8px 5px; /* Padding interno menor */
+        font-size: 0.95em; 
+        padding: 8px 4px; /* Padding interno bem pequeno */
       }
+      /* Outros inputs (Select, Constante D) */
       select, .input-d input, .input-group input[type="number"]:not(.coord) {
-        font-size: 1em;
+        font-size: 0.95em;
         padding: 8px;
       }
     }
@@ -227,7 +234,6 @@ function distancia_ponto_reta(P, Po, V) {
     throw new Error("O vetor diretor da reta não pode ser o vetor nulo.");
   }
   let vetor = sub_vet(P, Po); // P - Po
-  // Distância é dada por |(P - Po) x V| / |V|
   let vetor_prod = prod_vet(vetor, V); 
   return mod(vetor_prod) / mod_V;
 }
