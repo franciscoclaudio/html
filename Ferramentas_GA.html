@@ -72,10 +72,16 @@
     /* === Estilo para a entrada horizontal (Coordenadas) === */
     .coord-group {
         display: flex;
-        gap: 8px; /* Espaço entre as coordenadas */
+        gap: 8px; /* Espaço entre as coordenadas (mantido) */
     }
     .coord-group input.coord {
-        flex-grow: 1; 
+        /*
+         * CÁLCULO DE LARGURA CORRIGIDO:
+         * Garante que 3 inputs + 2 gaps (16px) ocupem exatamente 100%.
+         * (100% - 16px) / 3 = 33.33% - 5.33px.
+         */
+        width: calc((100% - 16px) / 3);
+        flex-grow: 0; /* Desabilita o flex-grow para usar a largura calculada */
         font-size: 1.1em;
         padding: 10px;
         margin-bottom: 12px;
@@ -118,7 +124,6 @@
       margin-top: 20px;
       font-weight: bold;
       text-align: center;
-      /* Correção principal: Força quebra de linha em longas strings sem espaço */
       word-wrap: break-word; 
       word-break: break-word;
       border: 2px solid #0057b8;
@@ -127,16 +132,15 @@
     /* === AJUSTES DE VISUALIZAÇÃO PARA CELULAR (Mobile) === */
     @media (max-width: 600px) {
       .container {
-        /* Aumenta a largura para 95% da viewport, garantindo espaço nas bordas */
         max-width: 95%; 
-        margin: 15px auto; /* Margin menor em cima/baixo */
+        margin: 15px auto;
         padding: 15px 10px 30px 10px;
         box-shadow: none;
         border-radius: 0;
         background: rgba(140, 170, 175, 0.98); 
       }
       h1 {
-        font-size: 1.6em; /* Título um pouco menor */
+        font-size: 1.6em;
       }
       label, #resultado {
         font-size: 1em;
@@ -145,12 +149,11 @@
         font-size: 1em;
         padding: 12px;
       }
-      /* Inputs de coordenada: Fonte e padding menores para mais espaço */
+      /* Aplica ajustes de padding e font-size para que caiba melhor no mobile */
       .coord-group input.coord {
         font-size: 0.95em; 
-        padding: 8px 4px; /* Padding interno bem pequeno */
+        padding: 8px 4px;
       }
-      /* Outros inputs (Select, Constante D) */
       select, .input-d input, .input-group input[type="number"]:not(.coord) {
         font-size: 0.95em;
         padding: 8px;
